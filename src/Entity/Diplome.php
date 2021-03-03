@@ -40,6 +40,12 @@ class Diplome
      */
     private $responsableDiplomes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeDiplome::class, inversedBy="diplomes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $typeDiplome;
+
     public function __construct()
     {
         $this->niveaux = new ArrayCollection();
@@ -131,6 +137,18 @@ class Diplome
                 $responsableDiplome->setDiplome(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTypeDiplome(): ?TypeDiplome
+    {
+        return $this->typeDiplome;
+    }
+
+    public function setTypeDiplome(?TypeDiplome $typeDiplome): self
+    {
+        $this->typeDiplome = $typeDiplome;
 
         return $this;
     }
