@@ -18,59 +18,41 @@ class Proposition
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="propositions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $module;
-
-    /**
      * @ORM\ManyToOne(targetEntity=InscriptionSemestre::class, inversedBy="propositions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $inscription_Semestre;
+    private $inscriptionSemestre;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ajac;
+    private $asAjac;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getModule(): ?Module
-    {
-        return $this->module;
-    }
-
-    public function setModule(?Module $module): self
-    {
-        $this->module = $module;
-
-        return $this;
-    }
-
     public function getInscriptionSemestre(): ?InscriptionSemestre
     {
-        return $this->inscription_Semestre;
+        return $this->inscriptionSemestre;
     }
 
-    public function setInscriptionSemestre(?InscriptionSemestre $inscription_Semestre): self
+    public function setInscriptionSemestre(?InscriptionSemestre $inscriptionSemestre): self
     {
-        $this->inscription_Semestre = $inscription_Semestre;
+        $this->inscriptionSemestre = $inscriptionSemestre;
 
         return $this;
     }
 
-    public function getAjac(): ?bool
+    public function getAsAjac(): ?bool
     {
-        return $this->ajac;
+        return $this->asAjac;
     }
 
-    public function setAjac(bool $ajac): self
+    public function setAsAjac(bool $asAjac): self
     {
-        $this->ajac = $ajac;
+        $this->asAjac = $asAjac;
 
         return $this;
     }

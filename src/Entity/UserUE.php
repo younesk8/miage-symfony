@@ -18,16 +18,10 @@ class UserUE
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=UE::class, inversedBy="userUEs")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $UE;
-
-    /**
      * @ORM\ManyToOne(targetEntity=UserModule::class, inversedBy="userUEs")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_Module;
+    private $userModule;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -39,26 +33,14 @@ class UserUE
         return $this->id;
     }
 
-    public function getUE(): ?UE
-    {
-        return $this->UE;
-    }
-
-    public function setUE(?UE $UE): self
-    {
-        $this->UE = $UE;
-
-        return $this;
-    }
-
     public function getUserModule(): ?UserModule
     {
-        return $this->user_Module;
+        return $this->userModule;
     }
 
-    public function setUserModule(?UserModule $user_Module): self
+    public function setUserModule(?UserModule $userModule): self
     {
-        $this->user_Module = $user_Module;
+        $this->userModule = $userModule;
 
         return $this;
     }

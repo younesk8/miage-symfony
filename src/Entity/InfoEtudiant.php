@@ -20,17 +20,17 @@ class InfoEtudiant
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $num_etu;
+    private $numEtu;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $regime_special;
+    private $regimeSpecial;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $adresse_etu;
+    private $adresseEtu;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="infoEtudiant", cascade={"persist", "remove"})
@@ -45,36 +45,36 @@ class InfoEtudiant
 
     public function getNumEtu(): ?string
     {
-        return $this->num_etu;
+        return $this->numEtu;
     }
 
-    public function setNumEtu(string $num_etu): self
+    public function setNumEtu(string $numEtu): self
     {
-        $this->num_etu = $num_etu;
+        $this->numEtu = $numEtu;
 
         return $this;
     }
 
     public function getRegimeSpecial(): ?string
     {
-        return $this->regime_special;
+        return $this->regimeSpecial;
     }
 
-    public function setRegimeSpecial(?string $regime_special): self
+    public function setRegimeSpecial(?string $regimeSpecial): self
     {
-        $this->regime_special = $regime_special;
+        $this->regimeSpecial = $regimeSpecial;
 
         return $this;
     }
 
     public function getAdresseEtu(): ?string
     {
-        return $this->adresse_etu;
+        return $this->adresseEtu;
     }
 
-    public function setAdresseEtu(?string $adresse_etu): self
+    public function setAdresseEtu(?string $adresseEtu): self
     {
-        $this->adresse_etu = $adresse_etu;
+        $this->adresseEtu = $adresseEtu;
 
         return $this;
     }

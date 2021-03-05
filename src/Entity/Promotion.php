@@ -22,18 +22,12 @@ class Promotion
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $annee;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="promotions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $niveau;
+    private $anneeScolaire;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="promotions")
      */
-    private $etudients;
+    private $etudiants;
 
     /**
      * @ORM\OneToMany(targetEntity=Groupe::class, mappedBy="promotion")
@@ -47,7 +41,7 @@ class Promotion
 
     public function __construct()
     {
-        $this->etudients = new ArrayCollection();
+        $this->etudiants = new ArrayCollection();
         $this->groupes = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
         $this->userModules = new ArrayCollection();
@@ -58,26 +52,14 @@ class Promotion
         return $this->id;
     }
 
-    public function getAnnee(): ?string
+    public function getAnneeScolaire(): ?string
     {
-        return $this->annee;
+        return $this->anneeScolaire;
     }
 
-    public function setAnnee(string $annee): self
+    public function setAnneeScolaire(string $anneeScolaire): self
     {
-        $this->annee = $annee;
-
-        return $this;
-    }
-
-    public function getNiveau(): ?Niveau
-    {
-        return $this->niveau;
-    }
-
-    public function setNiveau(?Niveau $niveau): self
-    {
-        $this->niveau = $niveau;
+        $this->anneeScolaire = $anneeScolaire;
 
         return $this;
     }
@@ -85,23 +67,23 @@ class Promotion
     /**
      * @return Collection|User[]
      */
-    public function getEtudients(): Collection
+    public function getEtudiants(): Collection
     {
-        return $this->etudients;
+        return $this->etudiants;
     }
 
-    public function addEtudient(User $etudient): self
+    public function addEtudiant(User $etudient): self
     {
-        if (!$this->etudients->contains($etudient)) {
-            $this->etudients[] = $etudient;
+        if (!$this->etudiants->contains($etudient)) {
+            $this->etudiants[] = $etudient;
         }
 
         return $this;
     }
 
-    public function removeEtudient(User $etudient): self
+    public function removeEtudiant(User $etudient): self
     {
-        $this->etudients->removeElement($etudient);
+        $this->etudiants->removeElement($etudient);
 
         return $this;
     }

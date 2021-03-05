@@ -20,15 +20,9 @@ class UserModule
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="userModules")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $module;
-
-    /**
      * @ORM\Column(type="boolean")
      */
-    private $ajac;
+    private $asAjac;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -56,26 +50,14 @@ class UserModule
         return $this->id;
     }
 
-    public function getModule(): ?Module
+    public function getAsAjac(): ?bool
     {
-        return $this->module;
+        return $this->asAjac;
     }
 
-    public function setModule(?Module $module): self
+    public function setAsAjac(bool $asAjac): self
     {
-        $this->module = $module;
-
-        return $this;
-    }
-
-    public function getAjac(): ?bool
-    {
-        return $this->ajac;
-    }
-
-    public function setAjac(bool $ajac): self
-    {
-        $this->ajac = $ajac;
+        $this->asAjac = $asAjac;
 
         return $this;
     }

@@ -20,12 +20,6 @@ class UserSemestre
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Semestre::class, inversedBy="userSemestres")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $semestre;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="userSemestres")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -35,17 +29,17 @@ class UserSemestre
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userSemestres")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $etudient;
+    private $etudiant;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $ajac;
+    private $asAjac;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $valide;
+    private $asValide;
 
     /**
      * @ORM\OneToMany(targetEntity=UserModule::class, mappedBy="userSemestre")
@@ -62,18 +56,6 @@ class UserSemestre
         return $this->id;
     }
 
-    public function getSemestre(): ?Semestre
-    {
-        return $this->semestre;
-    }
-
-    public function setSemestre(?Semestre $semestre): self
-    {
-        $this->semestre = $semestre;
-
-        return $this;
-    }
-
     public function getPromotion(): ?Promotion
     {
         return $this->promotion;
@@ -86,38 +68,38 @@ class UserSemestre
         return $this;
     }
 
-    public function getEtudient(): ?User
+    public function getEtudiant(): ?User
     {
-        return $this->etudient;
+        return $this->etudiant;
     }
 
-    public function setEtudient(?User $etudient): self
+    public function setEtudiant(?User $etudiant): self
     {
-        $this->etudient = $etudient;
+        $this->etudiant = $etudiant;
 
         return $this;
     }
 
-    public function getAjac(): ?bool
+    public function getAsAjac(): ?bool
     {
-        return $this->ajac;
+        return $this->asAjac;
     }
 
-    public function setAjac(?bool $ajac): self
+    public function setAsAjac(?bool $asAjac): self
     {
-        $this->ajac = $ajac;
+        $this->asAjac = $asAjac;
 
         return $this;
     }
 
-    public function getValide(): ?bool
+    public function getAsValide(): ?bool
     {
-        return $this->valide;
+        return $this->asValide;
     }
 
-    public function setValide(?bool $valide): self
+    public function setAsValide(?bool $asValide): self
     {
-        $this->valide = $valide;
+        $this->asValide = $asValide;
 
         return $this;
     }
