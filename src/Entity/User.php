@@ -91,6 +91,16 @@ class User implements UserInterface
      */
     private $infoEtudiant;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Ecole::class, inversedBy="responsable")
+     */
+    private $responsableEcole;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="responsable")
+     */
+    private $responsableDepartement;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -361,6 +371,30 @@ class User implements UserInterface
         if ($infoEtudiant->getUser() !== $this) {
             $infoEtudiant->setUser($this);
         }
+
+        return $this;
+    }
+
+    public function getResponsableEcole(): ?Ecole
+    {
+        return $this->responsableEcole;
+    }
+
+    public function setResponsableEcole(?Ecole $responsableEcole): self
+    {
+        $this->responsableEcole = $responsableEcole;
+
+        return $this;
+    }
+
+    public function getResponsableDepartement(): ?Departement
+    {
+        return $this->responsableDepartement;
+    }
+
+    public function setResponsableDepartement(?Departement $responsableDepartement): self
+    {
+        $this->responsableDepartement = $responsableDepartement;
 
         return $this;
     }
