@@ -34,9 +34,15 @@ class Pole
      */
     private $responsable;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Diplome::class, mappedBy="pole")
+     */
+    private $diplomes;
+
     public function __construct()
     {
         $this->responsable = new ArrayCollection();
+        $this->diplomes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +98,36 @@ class Pole
             // set the owning side to null (unless already changed)
             if ($responsable->getResponsablePole() === $this) {
                 $responsable->setResponsablePole(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Diplome[]
+     */
+    public function getDiplomes(): Collection
+    {
+        return $this->diplomes;
+    }
+
+    public function addDiplome(Diplome $diplome): self
+    {
+        if (!$this->diplomes->contains($diplome)) {
+            $this->diplomes[] = $diplome;
+            $diplome->setPole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiplome(Diplome $diplome): self
+    {
+        if ($this->diplomes->removeElement($diplome)) {
+            // set the owning side to null (unless already changed)
+            if ($diplome->getPole() === $this) {
+                $diplome->setPole(null);
             }
         }
 
