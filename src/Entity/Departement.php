@@ -35,9 +35,15 @@ class Departement
      */
     private $responsable;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Pole::class, mappedBy="departement")
+     */
+    private $poles;
+
     public function __construct()
     {
         $this->responsable = new ArrayCollection();
+        $this->poles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +99,36 @@ class Departement
             // set the owning side to null (unless already changed)
             if ($responsable->getResponsableDepartement() === $this) {
                 $responsable->setResponsableDepartement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Pole[]
+     */
+    public function getPoles(): Collection
+    {
+        return $this->poles;
+    }
+
+    public function addPole(Pole $pole): self
+    {
+        if (!$this->poles->contains($pole)) {
+            $this->poles[] = $pole;
+            $pole->setDepartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removePole(Pole $pole): self
+    {
+        if ($this->poles->removeElement($pole)) {
+            // set the owning side to null (unless already changed)
+            if ($pole->getDepartement() === $this) {
+                $pole->setDepartement(null);
             }
         }
 
