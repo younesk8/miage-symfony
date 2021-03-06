@@ -45,9 +45,15 @@ class Diplome
      */
     private $annees;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Mention::class, mappedBy="diplome")
+     */
+    private $mentions;
+
     public function __construct()
     {
         $this->annees = new ArrayCollection();
+        $this->mentions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +133,36 @@ class Diplome
             // set the owning side to null (unless already changed)
             if ($annee->getDiplome() === $this) {
                 $annee->setDiplome(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mention[]
+     */
+    public function getMentions(): Collection
+    {
+        return $this->mentions;
+    }
+
+    public function addMention(Mention $mention): self
+    {
+        if (!$this->mentions->contains($mention)) {
+            $this->mentions[] = $mention;
+            $mention->setDiplome($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMention(Mention $mention): self
+    {
+        if ($this->mentions->removeElement($mention)) {
+            // set the owning side to null (unless already changed)
+            if ($mention->getDiplome() === $this) {
+                $mention->setDiplome(null);
             }
         }
 
