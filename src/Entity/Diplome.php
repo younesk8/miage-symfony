@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DiplomeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +39,16 @@ class Diplome
      * @ORM\JoinColumn(nullable=false)
      */
     private $pole;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Annee::class, mappedBy="diplome")
+     */
+    private $annees;
+
+    public function __construct()
+    {
+        $this->annees = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -87,6 +99,36 @@ class Diplome
     public function setPole(?Pole $pole): self
     {
         $this->pole = $pole;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Annee[]
+     */
+    public function getAnnees(): Collection
+    {
+        return $this->annees;
+    }
+
+    public function addAnnee(Annee $annee): self
+    {
+        if (!$this->annees->contains($annee)) {
+            $this->annees[] = $annee;
+            $annee->setDiplome($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnee(Annee $annee): self
+    {
+        if ($this->annees->removeElement($annee)) {
+            // set the owning side to null (unless already changed)
+            if ($annee->getDiplome() === $this) {
+                $annee->setDiplome(null);
+            }
+        }
 
         return $this;
     }
