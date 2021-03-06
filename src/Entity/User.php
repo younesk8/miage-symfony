@@ -101,6 +101,11 @@ class User implements UserInterface
      */
     private $responsableDepartement;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Pole::class, inversedBy="responsable")
+     */
+    private $responsablePole;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -395,6 +400,18 @@ class User implements UserInterface
     public function setResponsableDepartement(?Departement $responsableDepartement): self
     {
         $this->responsableDepartement = $responsableDepartement;
+
+        return $this;
+    }
+
+    public function getResponsablePole(): ?Pole
+    {
+        return $this->responsablePole;
+    }
+
+    public function setResponsablePole(?Pole $responsablePole): self
+    {
+        $this->responsablePole = $responsablePole;
 
         return $this;
     }
