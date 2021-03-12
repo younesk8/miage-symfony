@@ -25,31 +25,35 @@ class Diplome
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Filliere::class, inversedBy="diplomes")
+     * @ORM\Column(type="integer")
+     */
+    private $nbAnnee;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $niveauDiplome;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Pole::class, inversedBy="diplomes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $filiere;
+    private $pole;
 
     /**
-     * @ORM\OneToMany(targetEntity=Niveau::class, mappedBy="diplome")
+     * @ORM\OneToMany(targetEntity=Annee::class, mappedBy="diplome")
      */
-    private $niveaux;
+    private $annees;
 
     /**
-     * @ORM\OneToMany(targetEntity=ResponsableDiplome::class, mappedBy="diplome")
+     * @ORM\OneToMany(targetEntity=Mention::class, mappedBy="diplome")
      */
-    private $responsableDiplomes;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=TypeDiplome::class, inversedBy="diplomes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $typeDiplome;
+    private $mentions;
 
     public function __construct()
     {
-        $this->niveaux = new ArrayCollection();
-        $this->responsableDiplomes = new ArrayCollection();
+        $this->annees = new ArrayCollection();
+        $this->mentions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,42 +73,66 @@ class Diplome
         return $this;
     }
 
-    public function getFiliere(): ?Filliere
+    public function getNbAnnee(): ?int
     {
-        return $this->filiere;
+        return $this->nbAnnee;
     }
 
-    public function setFiliere(?Filliere $filiere): self
+    public function setNbAnnee(int $nbAnnee): self
     {
-        $this->filiere = $filiere;
+        $this->nbAnnee = $nbAnnee;
+
+        return $this;
+    }
+
+    public function getNiveauDiplome(): ?string
+    {
+        return $this->niveauDiplome;
+    }
+
+    public function setNiveauDiplome(string $niveauDiplome): self
+    {
+        $this->niveauDiplome = $niveauDiplome;
+
+        return $this;
+    }
+
+    public function getPole(): ?Pole
+    {
+        return $this->pole;
+    }
+
+    public function setPole(?Pole $pole): self
+    {
+        $this->pole = $pole;
 
         return $this;
     }
 
     /**
-     * @return Collection|Niveau[]
+     * @return Collection|Annee[]
      */
-    public function getNiveaux(): Collection
+    public function getAnnees(): Collection
     {
-        return $this->niveaux;
+        return $this->annees;
     }
 
-    public function addNiveau(Niveau $niveau): self
+    public function addAnnee(Annee $annee): self
     {
-        if (!$this->niveaux->contains($niveau)) {
-            $this->niveaux[] = $niveau;
-            $niveau->setDiplome($this);
+        if (!$this->annees->contains($annee)) {
+            $this->annees[] = $annee;
+            $annee->setDiplome($this);
         }
 
         return $this;
     }
 
-    public function removeNiveau(Niveau $niveau): self
+    public function removeAnnee(Annee $annee): self
     {
-        if ($this->niveaux->removeElement($niveau)) {
+        if ($this->annees->removeElement($annee)) {
             // set the owning side to null (unless already changed)
-            if ($niveau->getDiplome() === $this) {
-                $niveau->setDiplome(null);
+            if ($annee->getDiplome() === $this) {
+                $annee->setDiplome(null);
             }
         }
 
@@ -112,43 +140,31 @@ class Diplome
     }
 
     /**
-     * @return Collection|ResponsableDiplome[]
+     * @return Collection|Mention[]
      */
-    public function getResponsableDiplomes(): Collection
+    public function getMentions(): Collection
     {
-        return $this->responsableDiplomes;
+        return $this->mentions;
     }
 
-    public function addResponsableDiplome(ResponsableDiplome $responsableDiplome): self
+    public function addMention(Mention $mention): self
     {
-        if (!$this->responsableDiplomes->contains($responsableDiplome)) {
-            $this->responsableDiplomes[] = $responsableDiplome;
-            $responsableDiplome->setDiplome($this);
+        if (!$this->mentions->contains($mention)) {
+            $this->mentions[] = $mention;
+            $mention->setDiplome($this);
         }
 
         return $this;
     }
 
-    public function removeResponsableDiplome(ResponsableDiplome $responsableDiplome): self
+    public function removeMention(Mention $mention): self
     {
-        if ($this->responsableDiplomes->removeElement($responsableDiplome)) {
+        if ($this->mentions->removeElement($mention)) {
             // set the owning side to null (unless already changed)
-            if ($responsableDiplome->getDiplome() === $this) {
-                $responsableDiplome->setDiplome(null);
+            if ($mention->getDiplome() === $this) {
+                $mention->setDiplome(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getTypeDiplome(): ?TypeDiplome
-    {
-        return $this->typeDiplome;
-    }
-
-    public function setTypeDiplome(?TypeDiplome $typeDiplome): self
-    {
-        $this->typeDiplome = $typeDiplome;
 
         return $this;
     }

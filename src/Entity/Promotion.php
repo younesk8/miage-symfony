@@ -22,18 +22,12 @@ class Promotion
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $annee;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="promotions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $niveau;
+    private $anneeScolaire;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="promotions")
      */
-    private $etudients;
+    private $etudiants;
 
     /**
      * @ORM\OneToMany(targetEntity=Groupe::class, mappedBy="promotion")
@@ -45,12 +39,34 @@ class Promotion
      */
     private $userSemestres;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Mention::class, inversedBy="promotions")
+     */
+    private $mention;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Annee::class, inversedBy="promotions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $annee;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="promotion")
+     */
+    private $responsables;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Parcours::class, inversedBy="promotions")
+     */
+    private $parcours;
+
     public function __construct()
     {
-        $this->etudients = new ArrayCollection();
+        $this->etudiants = new ArrayCollection();
         $this->groupes = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
         $this->userModules = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,26 +74,14 @@ class Promotion
         return $this->id;
     }
 
-    public function getAnnee(): ?string
+    public function getAnneeScolaire(): ?string
     {
-        return $this->annee;
+        return $this->anneeScolaire;
     }
 
-    public function setAnnee(string $annee): self
+    public function setAnneeScolaire(string $anneeScolaire): self
     {
-        $this->annee = $annee;
-
-        return $this;
-    }
-
-    public function getNiveau(): ?Niveau
-    {
-        return $this->niveau;
-    }
-
-    public function setNiveau(?Niveau $niveau): self
-    {
-        $this->niveau = $niveau;
+        $this->anneeScolaire = $anneeScolaire;
 
         return $this;
     }
@@ -85,23 +89,23 @@ class Promotion
     /**
      * @return Collection|User[]
      */
-    public function getEtudients(): Collection
+    public function getEtudiants(): Collection
     {
-        return $this->etudients;
+        return $this->etudiants;
     }
 
-    public function addEtudient(User $etudient): self
+    public function addEtudiant(User $etudient): self
     {
-        if (!$this->etudients->contains($etudient)) {
-            $this->etudients[] = $etudient;
+        if (!$this->etudiants->contains($etudient)) {
+            $this->etudiants[] = $etudient;
         }
 
         return $this;
     }
 
-    public function removeEtudient(User $etudient): self
+    public function removeEtudiant(User $etudient): self
     {
-        $this->etudients->removeElement($etudient);
+        $this->etudiants->removeElement($etudient);
 
         return $this;
     }
@@ -162,6 +166,72 @@ class Promotion
                 $userSemestre->setPromotion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMention(): ?Mention
+    {
+        return $this->mention;
+    }
+
+    public function setMention(?Mention $mention): self
+    {
+        $this->mention = $mention;
+
+        return $this;
+    }
+
+    public function getAnnee(): ?Annee
+    {
+        return $this->annee;
+    }
+
+    public function setAnnee(?Annee $annee): self
+    {
+        $this->annee = $annee;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->setPromotion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getPromotion() === $this) {
+                $responsable->setPromotion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getParcours(): ?Parcours
+    {
+        return $this->parcours;
+    }
+
+    public function setParcours(?Parcours $parcours): self
+    {
+        $this->parcours = $parcours;
 
         return $this;
     }
