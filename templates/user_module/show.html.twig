@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserModule{% endblock %}
+
+{% block body %}
+    <h1>UserModule</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_module.id }}</td>
+            </tr>
+            <tr>
+                <th>AsAjac</th>
+                <td>{{ user_module.asAjac ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Moyenne</th>
+                <td>{{ user_module.moyenne }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_module_index') }}">back to list</a>
+
+    <a href="{{ path('user_module_edit', {'id': user_module.id}) }}">edit</a>
+
+    {{ include('user_module/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserUE index{% endblock %}
+
+{% block body %}
+    <h1>UserUE index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_u_e in user_u_es %}
+            <tr>
+                <td>{{ user_u_e.id }}</td>
+                <td>
+                    <a href="{{ path('user_u_e_show', {'id': user_u_e.id}) }}">show</a>
+                    <a href="{{ path('user_u_e_edit', {'id': user_u_e.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_u_e_new') }}">Create new</a>
+{% endblock %}

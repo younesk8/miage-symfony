@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InscriptionSemestre index{% endblock %}
+
+{% block body %}
+    <h1>InscriptionSemestre index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>AnneeScolaire</th>
+                <th>AsTierTemp</th>
+                <th>AsRSE</th>
+                <th>AsValide</th>
+                <th>AsTransmise</th>
+                <th>MessageProf</th>
+                <th>Regime</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inscription_semestre in inscription_semestres %}
+            <tr>
+                <td>{{ inscription_semestre.id }}</td>
+                <td>{{ inscription_semestre.anneeScolaire }}</td>
+                <td>{{ inscription_semestre.asTierTemp ? 'Yes' : 'No' }}</td>
+                <td>{{ inscription_semestre.asRSE ? 'Yes' : 'No' }}</td>
+                <td>{{ inscription_semestre.asValide ? 'Yes' : 'No' }}</td>
+                <td>{{ inscription_semestre.asTransmise ? 'Yes' : 'No' }}</td>
+                <td>{{ inscription_semestre.messageProf }}</td>
+                <td>{{ inscription_semestre.regime }}</td>
+                <td>
+                    <a href="{{ path('inscription_semestre_show', {'id': inscription_semestre.id}) }}">show</a>
+                    <a href="{{ path('inscription_semestre_edit', {'id': inscription_semestre.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('inscription_semestre_new') }}">Create new</a>
+{% endblock %}
