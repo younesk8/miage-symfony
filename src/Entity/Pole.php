@@ -30,19 +30,19 @@ class Pole
     private $departement;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="responsablePole")
-     */
-    private $responsable;
-
-    /**
      * @ORM\OneToMany(targetEntity=Diplome::class, mappedBy="pole")
      */
     private $diplomes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="pole")
+     */
+    private $responsables;
+
     public function __construct()
     {
-        $this->responsable = new ArrayCollection();
         $this->diplomes = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,36 +75,6 @@ class Pole
     }
 
     /**
-     * @return Collection|User[]
-     */
-    public function getResponsable(): Collection
-    {
-        return $this->responsable;
-    }
-
-    public function addResponsable(User $responsable): self
-    {
-        if (!$this->responsable->contains($responsable)) {
-            $this->responsable[] = $responsable;
-            $responsable->setResponsablePole($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResponsable(User $responsable): self
-    {
-        if ($this->responsable->removeElement($responsable)) {
-            // set the owning side to null (unless already changed)
-            if ($responsable->getResponsablePole() === $this) {
-                $responsable->setResponsablePole(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Diplome[]
      */
     public function getDiplomes(): Collection
@@ -128,6 +98,36 @@ class Pole
             // set the owning side to null (unless already changed)
             if ($diplome->getPole() === $this) {
                 $diplome->setPole(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->setPole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getPole() === $this) {
+                $responsable->setPole(null);
             }
         }
 

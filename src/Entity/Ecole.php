@@ -25,19 +25,19 @@ class Ecole
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="responsableEcole")
-     */
-    private $responsable;
-
-    /**
      * @ORM\OneToMany(targetEntity=Departement::class, mappedBy="ecole")
      */
     private $departements;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="ecole")
+     */
+    private $responsables;
+
     public function __construct()
     {
-        $this->responsable = new ArrayCollection();
         $this->departements = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,36 +53,6 @@ class Ecole
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getResponsable(): Collection
-    {
-        return $this->responsable;
-    }
-
-    public function addResponsable(User $responsable): self
-    {
-        if (!$this->responsable->contains($responsable)) {
-            $this->responsable[] = $responsable;
-            $responsable->setResponsableEcole($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResponsable(User $responsable): self
-    {
-        if ($this->responsable->removeElement($responsable)) {
-            // set the owning side to null (unless already changed)
-            if ($responsable->getResponsableEcole() === $this) {
-                $responsable->setResponsableEcole(null);
-            }
-        }
 
         return $this;
     }
@@ -111,6 +81,36 @@ class Ecole
             // set the owning side to null (unless already changed)
             if ($departement->getEcole() === $this) {
                 $departement->setEcole(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->setEcole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getEcole() === $this) {
+                $responsable->setEcole(null);
             }
         }
 

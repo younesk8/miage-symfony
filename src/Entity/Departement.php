@@ -31,19 +31,19 @@ class Departement
     private $ecole;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="responsableDepartement")
-     */
-    private $responsable;
-
-    /**
      * @ORM\OneToMany(targetEntity=Pole::class, mappedBy="departement")
      */
     private $poles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="departement")
+     */
+    private $responsables;
+
     public function __construct()
     {
-        $this->responsable = new ArrayCollection();
         $this->poles = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,36 +76,6 @@ class Departement
     }
 
     /**
-     * @return Collection|User[]
-     */
-    public function getResponsable(): Collection
-    {
-        return $this->responsable;
-    }
-
-    public function addResponsable(User $responsable): self
-    {
-        if (!$this->responsable->contains($responsable)) {
-            $this->responsable[] = $responsable;
-            $responsable->setResponsableDepartement($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResponsable(User $responsable): self
-    {
-        if ($this->responsable->removeElement($responsable)) {
-            // set the owning side to null (unless already changed)
-            if ($responsable->getResponsableDepartement() === $this) {
-                $responsable->setResponsableDepartement(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Pole[]
      */
     public function getPoles(): Collection
@@ -129,6 +99,36 @@ class Departement
             // set the owning side to null (unless already changed)
             if ($pole->getDepartement() === $this) {
                 $pole->setDepartement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->setDepartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getDepartement() === $this) {
+                $responsable->setDepartement(null);
             }
         }
 

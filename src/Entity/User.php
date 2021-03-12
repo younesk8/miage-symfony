@@ -92,19 +92,9 @@ class User implements UserInterface
     private $infoEtudiant;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ecole::class, inversedBy="responsable")
+     * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="user")
      */
-    private $responsableEcole;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="responsable")
-     */
-    private $responsableDepartement;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Pole::class, inversedBy="responsable")
-     */
-    private $responsablePole;
+    private $responsables;
 
     public function getId(): ?int
     {
@@ -129,6 +119,7 @@ class User implements UserInterface
         $this->promotions = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
         $this->userModules = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     /**
@@ -380,38 +371,32 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getResponsableEcole(): ?Ecole
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
     {
-        return $this->responsableEcole;
+        return $this->responsables;
     }
 
-    public function setResponsableEcole(?Ecole $responsableEcole): self
+    public function addResponsable(Responsable $responsable): self
     {
-        $this->responsableEcole = $responsableEcole;
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->setUser($this);
+        }
 
         return $this;
     }
 
-    public function getResponsableDepartement(): ?Departement
+    public function removeResponsable(Responsable $responsable): self
     {
-        return $this->responsableDepartement;
-    }
-
-    public function setResponsableDepartement(?Departement $responsableDepartement): self
-    {
-        $this->responsableDepartement = $responsableDepartement;
-
-        return $this;
-    }
-
-    public function getResponsablePole(): ?Pole
-    {
-        return $this->responsablePole;
-    }
-
-    public function setResponsablePole(?Pole $responsablePole): self
-    {
-        $this->responsablePole = $responsablePole;
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getUser() === $this) {
+                $responsable->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -28,6 +28,12 @@ class Proposition
      */
     private $asAjac;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="propositions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $module;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +59,18 @@ class Proposition
     public function setAsAjac(bool $asAjac): self
     {
         $this->asAjac = $asAjac;
+
+        return $this;
+    }
+
+    public function getModule(): ?Module
+    {
+        return $this->module;
+    }
+
+    public function setModule(?Module $module): self
+    {
+        $this->module = $module;
 
         return $this;
     }

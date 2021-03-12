@@ -39,12 +39,34 @@ class Promotion
      */
     private $userSemestres;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Mention::class, inversedBy="promotions")
+     */
+    private $mention;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Annee::class, inversedBy="promotions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $annee;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="promotion")
+     */
+    private $responsables;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Parcours::class, inversedBy="promotions")
+     */
+    private $parcours;
+
     public function __construct()
     {
         $this->etudiants = new ArrayCollection();
         $this->groupes = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
         $this->userModules = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,6 +166,72 @@ class Promotion
                 $userSemestre->setPromotion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMention(): ?Mention
+    {
+        return $this->mention;
+    }
+
+    public function setMention(?Mention $mention): self
+    {
+        $this->mention = $mention;
+
+        return $this;
+    }
+
+    public function getAnnee(): ?Annee
+    {
+        return $this->annee;
+    }
+
+    public function setAnnee(?Annee $annee): self
+    {
+        $this->annee = $annee;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->setPromotion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getPromotion() === $this) {
+                $responsable->setPromotion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getParcours(): ?Parcours
+    {
+        return $this->parcours;
+    }
+
+    public function setParcours(?Parcours $parcours): self
+    {
+        $this->parcours = $parcours;
 
         return $this;
     }
