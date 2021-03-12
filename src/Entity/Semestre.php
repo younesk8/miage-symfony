@@ -25,32 +25,31 @@ class Semestre
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="semestres")
+     * @ORM\ManyToOne(targetEntity=Annee::class, inversedBy="semestres")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $niveau;
+    private $annee;
 
     /**
-     * @ORM\OneToMany(targetEntity=Module::class, mappedBy="semestre")
+     * @ORM\ManyToOne(targetEntity=Mention::class, inversedBy="semestres")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $modules;
-
-    /**
-     * @ORM\OneToMany(targetEntity=InscriptionSemestre::class, mappedBy="semestre")
-     */
-    private $inscriptionSemestres;
+    private $mention;
 
     /**
      * @ORM\OneToMany(targetEntity=UserSemestre::class, mappedBy="semestre")
      */
     private $userSemestres;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UE::class, mappedBy="semestre")
+     */
+    private $uEs;
+
     public function __construct()
     {
-        $this->modules = new ArrayCollection();
-        $this->inscriptionSemestres = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
-        $this->userModules = new ArrayCollection();
+        $this->uEs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,74 +69,26 @@ class Semestre
         return $this;
     }
 
-    public function getNiveau(): ?Niveau
+    public function getAnnee(): ?Annee
     {
-        return $this->niveau;
+        return $this->annee;
     }
 
-    public function setNiveau(?Niveau $niveau): self
+    public function setAnnee(?Annee $annee): self
     {
-        $this->niveau = $niveau;
+        $this->annee = $annee;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Module[]
-     */
-    public function getModules(): Collection
+    public function getMention(): ?Mention
     {
-        return $this->modules;
+        return $this->mention;
     }
 
-    public function addModule(Module $module): self
+    public function setMention(?Mention $mention): self
     {
-        if (!$this->modules->contains($module)) {
-            $this->modules[] = $module;
-            $module->setSemestre($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModule(Module $module): self
-    {
-        if ($this->modules->removeElement($module)) {
-            // set the owning side to null (unless already changed)
-            if ($module->getSemestre() === $this) {
-                $module->setSemestre(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|InscriptionSemestre[]
-     */
-    public function getInscriptionSemestres(): Collection
-    {
-        return $this->inscriptionSemestres;
-    }
-
-    public function addInscriptionSemestre(InscriptionSemestre $inscriptionSemestre): self
-    {
-        if (!$this->inscriptionSemestres->contains($inscriptionSemestre)) {
-            $this->inscriptionSemestres[] = $inscriptionSemestre;
-            $inscriptionSemestre->setSemestre($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInscriptionSemestre(InscriptionSemestre $inscriptionSemestre): self
-    {
-        if ($this->inscriptionSemestres->removeElement($inscriptionSemestre)) {
-            // set the owning side to null (unless already changed)
-            if ($inscriptionSemestre->getSemestre() === $this) {
-                $inscriptionSemestre->setSemestre(null);
-            }
-        }
+        $this->mention = $mention;
 
         return $this;
     }
@@ -166,6 +117,36 @@ class Semestre
             // set the owning side to null (unless already changed)
             if ($userSemestre->getSemestre() === $this) {
                 $userSemestre->setSemestre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UE[]
+     */
+    public function getUEs(): Collection
+    {
+        return $this->uEs;
+    }
+
+    public function addUE(UE $uE): self
+    {
+        if (!$this->uEs->contains($uE)) {
+            $this->uEs[] = $uE;
+            $uE->setSemestre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUE(UE $uE): self
+    {
+        if ($this->uEs->removeElement($uE)) {
+            // set the owning side to null (unless already changed)
+            if ($uE->getSemestre() === $this) {
+                $uE->setSemestre(null);
             }
         }
 

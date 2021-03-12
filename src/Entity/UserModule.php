@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\UserModuleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,15 +19,9 @@ class UserModule
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="userModules")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $module;
-
-    /**
      * @ORM\Column(type="boolean")
      */
-    private $ajac;
+    private $asAjac;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -36,15 +29,16 @@ class UserModule
     private $moyenne;
 
     /**
-     * @ORM\ManyToOne(targetEntity=UserSemestre::class, inversedBy="userModules")
+     * @ORM\ManyToOne(targetEntity=UserUE::class, inversedBy="userModules")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $userSemestre;
+    private $userUE;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserUE::class, mappedBy="user_Module")
+     * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="userModules")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $userUEs;
+    private $module;
 
     public function __construct()
     {
@@ -56,26 +50,14 @@ class UserModule
         return $this->id;
     }
 
-    public function getModule(): ?Module
+    public function getAsAjac(): ?bool
     {
-        return $this->module;
+        return $this->asAjac;
     }
 
-    public function setModule(?Module $module): self
+    public function setAsAjac(bool $asAjac): self
     {
-        $this->module = $module;
-
-        return $this;
-    }
-
-    public function getAjac(): ?bool
-    {
-        return $this->ajac;
-    }
-
-    public function setAjac(bool $ajac): self
-    {
-        $this->ajac = $ajac;
+        $this->asAjac = $asAjac;
 
         return $this;
     }
@@ -92,45 +74,28 @@ class UserModule
         return $this;
     }
 
-    public function getUserSemestre(): ?UserSemestre
+    public function getUserUE(): ?UserUE
     {
-        return $this->userSemestre;
+        return $this->userUE;
     }
 
-    public function setUserSemestre(?UserSemestre $userSemestre): self
+    public function setUserUE(?UserUE $userUE): self
     {
-        $this->userSemestre = $userSemestre;
+        $this->userUE = $userUE;
 
         return $this;
     }
 
-    /**
-     * @return Collection|UserUE[]
-     */
-    public function getUserUEs(): Collection
+    public function getModule(): ?Module
     {
-        return $this->userUEs;
+        return $this->module;
     }
 
-    public function addUserUE(UserUE $userUE): self
+    public function setModule(?Module $module): self
     {
-        if (!$this->userUEs->contains($userUE)) {
-            $this->userUEs[] = $userUE;
-            $userUE->setUserModule($this);
-        }
+        $this->module = $module;
 
         return $this;
     }
 
-    public function removeUserUE(UserUE $userUE): self
-    {
-        if ($this->userUEs->removeElement($userUE)) {
-            // set the owning side to null (unless already changed)
-            if ($userUE->getUserModule() === $this) {
-                $userUE->setUserModule(null);
-            }
-        }
-
-        return $this;
-    }
 }

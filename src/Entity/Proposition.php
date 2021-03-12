@@ -18,25 +18,49 @@ class Proposition
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity=InscriptionSemestre::class, inversedBy="propositions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $inscriptionSemestre;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $asAjac;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="propositions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $module;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=InscriptionSemestre::class, inversedBy="propositions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $inscription_Semestre;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $ajac;
-
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getInscriptionSemestre(): ?InscriptionSemestre
+    {
+        return $this->inscriptionSemestre;
+    }
+
+    public function setInscriptionSemestre(?InscriptionSemestre $inscriptionSemestre): self
+    {
+        $this->inscriptionSemestre = $inscriptionSemestre;
+
+        return $this;
+    }
+
+    public function getAsAjac(): ?bool
+    {
+        return $this->asAjac;
+    }
+
+    public function setAsAjac(bool $asAjac): self
+    {
+        $this->asAjac = $asAjac;
+
+        return $this;
     }
 
     public function getModule(): ?Module
@@ -47,30 +71,6 @@ class Proposition
     public function setModule(?Module $module): self
     {
         $this->module = $module;
-
-        return $this;
-    }
-
-    public function getInscriptionSemestre(): ?InscriptionSemestre
-    {
-        return $this->inscription_Semestre;
-    }
-
-    public function setInscriptionSemestre(?InscriptionSemestre $inscription_Semestre): self
-    {
-        $this->inscription_Semestre = $inscription_Semestre;
-
-        return $this;
-    }
-
-    public function getAjac(): ?bool
-    {
-        return $this->ajac;
-    }
-
-    public function setAjac(bool $ajac): self
-    {
-        $this->ajac = $ajac;
 
         return $this;
     }

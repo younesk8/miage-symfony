@@ -49,7 +49,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $date_Naissance;
+    private $dateNaissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -67,24 +67,14 @@ class User implements UserInterface
     private $tel_Portable;
 
     /**
-     * @ORM\OneToMany(targetEntity=InscriptionSemestre::class, mappedBy="etudient")
+     * @ORM\OneToMany(targetEntity=InscriptionSemestre::class, mappedBy="etudiant")
      */
     private $inscriptionSemestres;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Promotion::class, mappedBy="etudients")
+     * @ORM\ManyToMany(targetEntity=Promotion::class, mappedBy="etudiants")
      */
     private $promotions;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ResponsableNiveau::class, mappedBy="responsable")
-     */
-    private $responsableNiveaux;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ResponsableDiplome::class, mappedBy="responsable")
-     */
-    private $responsableDiplomes;
 
     /**
      * @ORM\Column(type="boolean")
@@ -92,7 +82,7 @@ class User implements UserInterface
     private $actif;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserSemestre::class, mappedBy="etudient")
+     * @ORM\OneToMany(targetEntity=UserSemestre::class, mappedBy="etudiant")
      */
     private $userSemestres;
 
@@ -100,6 +90,11 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity=InfoEtudiant::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $infoEtudiant;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="user")
+     */
+    private $responsables;
 
     public function getId(): ?int
     {
@@ -122,10 +117,9 @@ class User implements UserInterface
     {
         $this->inscriptionSemestres = new ArrayCollection();
         $this->promotions = new ArrayCollection();
-        $this->responsableNiveaux = new ArrayCollection();
-        $this->responsableDiplomes = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
         $this->userModules = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     /**
@@ -215,12 +209,12 @@ class User implements UserInterface
 
     public function getDateNaissance(): ?string
     {
-        return $this->date_Naissance;
+        return $this->dateNaissance;
     }
 
-    public function setDateNaissance(?string $date_Naissance): self
+    public function setDateNaissance(?string $dateNaissance): self
     {
-        $this->date_Naissance = $date_Naissance;
+        $this->dateNaissance = $dateNaissance;
 
         return $this;
     }
@@ -273,7 +267,7 @@ class User implements UserInterface
     {
         if (!$this->inscriptionSemestres->contains($inscriptionSemestre)) {
             $this->inscriptionSemestres[] = $inscriptionSemestre;
-            $inscriptionSemestre->setEtudient($this);
+            $inscriptionSemestre->setEtudiant($this);
         }
 
         return $this;
@@ -283,8 +277,8 @@ class User implements UserInterface
     {
         if ($this->inscriptionSemestres->removeElement($inscriptionSemestre)) {
             // set the owning side to null (unless already changed)
-            if ($inscriptionSemestre->getEtudient() === $this) {
-                $inscriptionSemestre->setEtudient(null);
+            if ($inscriptionSemestre->getEtudiant() === $this) {
+                $inscriptionSemestre->setEtudiant(null);
             }
         }
 
@@ -303,7 +297,7 @@ class User implements UserInterface
     {
         if (!$this->promotions->contains($promotion)) {
             $this->promotions[] = $promotion;
-            $promotion->addEtudient($this);
+            $promotion->addEtudiant($this);
         }
 
         return $this;
@@ -312,67 +306,7 @@ class User implements UserInterface
     public function removePromotion(Promotion $promotion): self
     {
         if ($this->promotions->removeElement($promotion)) {
-            $promotion->removeEtudient($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ResponsableNiveau[]
-     */
-    public function getResponsableNiveaux(): Collection
-    {
-        return $this->responsableNiveaux;
-    }
-
-    public function addResponsableNiveau(ResponsableNiveau $responsableNiveau): self
-    {
-        if (!$this->responsableNiveaux->contains($responsableNiveau)) {
-            $this->responsableNiveaux[] = $responsableNiveau;
-            $responsableNiveau->setResponsable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResponsableNiveau(ResponsableNiveau $responsableNiveau): self
-    {
-        if ($this->responsableNiveaux->removeElement($responsableNiveau)) {
-            // set the owning side to null (unless already changed)
-            if ($responsableNiveau->getResponsable() === $this) {
-                $responsableNiveau->setResponsable(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ResponsableDiplome[]
-     */
-    public function getResponsableDiplomes(): Collection
-    {
-        return $this->responsableDiplomes;
-    }
-
-    public function addResponsableDiplome(ResponsableDiplome $responsableDiplome): self
-    {
-        if (!$this->responsableDiplomes->contains($responsableDiplome)) {
-            $this->responsableDiplomes[] = $responsableDiplome;
-            $responsableDiplome->setResponsable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResponsableDiplome(ResponsableDiplome $responsableDiplome): self
-    {
-        if ($this->responsableDiplomes->removeElement($responsableDiplome)) {
-            // set the owning side to null (unless already changed)
-            if ($responsableDiplome->getResponsable() === $this) {
-                $responsableDiplome->setResponsable(null);
-            }
+            $promotion->removeEtudiant($this);
         }
 
         return $this;
@@ -402,7 +336,7 @@ class User implements UserInterface
     {
         if (!$this->userSemestres->contains($userSemestre)) {
             $this->userSemestres[] = $userSemestre;
-            $userSemestre->setEtudient($this);
+            $userSemestre->setEtudiant($this);
         }
 
         return $this;
@@ -412,8 +346,8 @@ class User implements UserInterface
     {
         if ($this->userSemestres->removeElement($userSemestre)) {
             // set the owning side to null (unless already changed)
-            if ($userSemestre->getEtudient() === $this) {
-                $userSemestre->setEtudient(null);
+            if ($userSemestre->getEtudiant() === $this) {
+                $userSemestre->setEtudiant(null);
             }
         }
 
@@ -432,6 +366,36 @@ class User implements UserInterface
         // set the owning side of the relation if necessary
         if ($infoEtudiant->getUser() !== $this) {
             $infoEtudiant->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getUser() === $this) {
+                $responsable->setUser(null);
+            }
         }
 
         return $this;

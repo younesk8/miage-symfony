@@ -25,25 +25,25 @@ class Module
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $code_Apogee;
-
-    /**
      * @ORM\Column(type="boolean")
      */
-    private $obligatoire;
+    private $asObligatoire;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Semestre::class, inversedBy="modules")
+     * @ORM\Column(type="integer")
+     */
+    private $ECTS;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=UE::class, inversedBy="modules")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $semestre;
+    private $UE;
 
     /**
-     * @ORM\OneToMany(targetEntity=UE::class, mappedBy="module")
+     * @ORM\OneToMany(targetEntity=UserModule::class, mappedBy="module")
      */
-    private $uEs;
+    private $userModules;
 
     /**
      * @ORM\OneToMany(targetEntity=Proposition::class, mappedBy="module")
@@ -51,15 +51,21 @@ class Module
     private $propositions;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserModule::class, mappedBy="module")
+     * @ORM\ManyToMany(targetEntity=Parcours::class, inversedBy="modules")
      */
-    private $userModules;
+    private $parcours;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Responsable::class, mappedBy="modules")
+     */
+    private $responsables;
 
     public function __construct()
     {
-        $this->uEs = new ArrayCollection();
-        $this->propositions = new ArrayCollection();
         $this->userModules = new ArrayCollection();
+        $this->propositions = new ArrayCollection();
+        $this->parcours = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,66 +85,66 @@ class Module
         return $this;
     }
 
-    public function getCodeApogee(): ?string
+    public function getAsObligatoire(): ?bool
     {
-        return $this->code_Apogee;
+        return $this->asObligatoire;
     }
 
-    public function setCodeApogee(string $code_Apogee): self
+    public function setAsObligatoire(bool $asObligatoire): self
     {
-        $this->code_Apogee = $code_Apogee;
+        $this->asObligatoire = $asObligatoire;
 
         return $this;
     }
 
-    public function getObligatoire(): ?bool
+    public function getECTS(): ?int
     {
-        return $this->obligatoire;
+        return $this->ECTS;
     }
 
-    public function setObligatoire(bool $obligatoire): self
+    public function setECTS(int $ECTS): self
     {
-        $this->obligatoire = $obligatoire;
+        $this->ECTS = $ECTS;
 
         return $this;
     }
 
-    public function getSemestre(): ?Semestre
+    public function getUE(): ?UE
     {
-        return $this->semestre;
+        return $this->UE;
     }
 
-    public function setSemestre(?Semestre $semestre): self
+    public function setUE(?UE $UE): self
     {
-        $this->semestre = $semestre;
+        $this->UE = $UE;
 
         return $this;
     }
 
     /**
-     * @return Collection|UE[]
+     * @return Collection|UserModule[]
      */
-    public function getUEs(): Collection
+    public function getUserModules(): Collection
     {
-        return $this->uEs;
+        return $this->userModules;
     }
 
-    public function addUE(UE $uE): self
+    public function addUserModule(UserModule $userModule): self
     {
-        if (!$this->uEs->contains($uE)) {
-            $this->uEs[] = $uE;
-            $uE->setModule($this);
+        if (!$this->userModules->contains($userModule)) {
+            $this->userModules[] = $userModule;
+            $userModule->setModule($this);
         }
 
         return $this;
     }
 
-    public function removeUE(UE $uE): self
+    public function removeUserModule(UserModule $userModule): self
     {
-        if ($this->uEs->removeElement($uE)) {
+        if ($this->userModules->removeElement($userModule)) {
             // set the owning side to null (unless already changed)
-            if ($uE->getModule() === $this) {
-                $uE->setModule(null);
+            if ($userModule->getModule() === $this) {
+                $userModule->setModule(null);
             }
         }
 
@@ -176,30 +182,51 @@ class Module
     }
 
     /**
-     * @return Collection|UserModule[]
+     * @return Collection|Parcours[]
      */
-    public function getUserModules(): Collection
+    public function getParcours(): Collection
     {
-        return $this->userModules;
+        return $this->parcours;
     }
 
-    public function addUserModule(UserModule $userModule): self
+    public function addParcour(Parcours $parcour): self
     {
-        if (!$this->userModules->contains($userModule)) {
-            $this->userModules[] = $userModule;
-            $userModule->setModule($this);
+        if (!$this->parcours->contains($parcour)) {
+            $this->parcours[] = $parcour;
         }
 
         return $this;
     }
 
-    public function removeUserModule(UserModule $userModule): self
+    public function removeParcour(Parcours $parcour): self
     {
-        if ($this->userModules->removeElement($userModule)) {
-            // set the owning side to null (unless already changed)
-            if ($userModule->getModule() === $this) {
-                $userModule->setModule(null);
-            }
+        $this->parcours->removeElement($parcour);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Responsable[]
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables[] = $responsable;
+            $responsable->addModule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            $responsable->removeModule($this);
         }
 
         return $this;
