@@ -20,12 +20,6 @@ class UserSemestre
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Semestre::class, inversedBy="userSemestres")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $semestre;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="userSemestres")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -35,43 +29,43 @@ class UserSemestre
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userSemestres")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $etudient;
+    private $etudiant;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $ajac;
+    private $asAjac;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $valide;
+    private $asValide;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserModule::class, mappedBy="userSemestre")
+     * @ORM\ManyToOne(targetEntity=Annee::class, inversedBy="userSemestres")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $userModules;
+    private $annee;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Semestre::class, inversedBy="userSemestres")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $semestre;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserUE::class, mappedBy="userSemestre")
+     */
+    private $userUEs;
 
     public function __construct()
     {
-        $this->userModules = new ArrayCollection();
+        $this->userUEs = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getSemestre(): ?Semestre
-    {
-        return $this->semestre;
-    }
-
-    public function setSemestre(?Semestre $semestre): self
-    {
-        $this->semestre = $semestre;
-
-        return $this;
     }
 
     public function getPromotion(): ?Promotion
@@ -86,66 +80,90 @@ class UserSemestre
         return $this;
     }
 
-    public function getEtudient(): ?User
+    public function getEtudiant(): ?User
     {
-        return $this->etudient;
+        return $this->etudiant;
     }
 
-    public function setEtudient(?User $etudient): self
+    public function setEtudiant(?User $etudiant): self
     {
-        $this->etudient = $etudient;
+        $this->etudiant = $etudiant;
 
         return $this;
     }
 
-    public function getAjac(): ?bool
+    public function getAsAjac(): ?bool
     {
-        return $this->ajac;
+        return $this->asAjac;
     }
 
-    public function setAjac(?bool $ajac): self
+    public function setAsAjac(?bool $asAjac): self
     {
-        $this->ajac = $ajac;
+        $this->asAjac = $asAjac;
 
         return $this;
     }
 
-    public function getValide(): ?bool
+    public function getAsValide(): ?bool
     {
-        return $this->valide;
+        return $this->asValide;
     }
 
-    public function setValide(?bool $valide): self
+    public function setAsValide(?bool $asValide): self
     {
-        $this->valide = $valide;
+        $this->asValide = $asValide;
+
+        return $this;
+    }
+
+    public function getAnnee(): ?Annee
+    {
+        return $this->annee;
+    }
+
+    public function setAnnee(?Annee $annee): self
+    {
+        $this->annee = $annee;
+
+        return $this;
+    }
+
+    public function getSemestre(): ?Semestre
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(?Semestre $semestre): self
+    {
+        $this->semestre = $semestre;
 
         return $this;
     }
 
     /**
-     * @return Collection|UserModule[]
+     * @return Collection|UserUE[]
      */
-    public function getUserModules(): Collection
+    public function getUserUEs(): Collection
     {
-        return $this->userModules;
+        return $this->userUEs;
     }
 
-    public function addUserModule(UserModule $userModule): self
+    public function addUserUE(UserUE $userUE): self
     {
-        if (!$this->userModules->contains($userModule)) {
-            $this->userModules[] = $userModule;
-            $userModule->setUserSemestre($this);
+        if (!$this->userUEs->contains($userUE)) {
+            $this->userUEs[] = $userUE;
+            $userUE->setUserSemestre($this);
         }
 
         return $this;
     }
 
-    public function removeUserModule(UserModule $userModule): self
+    public function removeUserUE(UserUE $userUE): self
     {
-        if ($this->userModules->removeElement($userModule)) {
+        if ($this->userUEs->removeElement($userUE)) {
             // set the owning side to null (unless already changed)
-            if ($userModule->getUserSemestre() === $this) {
-                $userModule->setUserSemestre(null);
+            if ($userUE->getUserSemestre() === $this) {
+                $userUE->setUserSemestre(null);
             }
         }
 

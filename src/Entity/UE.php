@@ -27,21 +27,27 @@ class UE
     /**
      * @ORM\Column(type="integer")
      */
-    private $coef;
+    private $Coef;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="uEs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Module::class, mappedBy="UE")
      */
-    private $module;
+    private $modules;
 
     /**
      * @ORM\OneToMany(targetEntity=UserUE::class, mappedBy="UE")
      */
     private $userUEs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Semestre::class, inversedBy="uEs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $semestre;
+
     public function __construct()
     {
+        $this->modules = new ArrayCollection();
         $this->userUEs = new ArrayCollection();
     }
 
@@ -64,24 +70,42 @@ class UE
 
     public function getCoef(): ?int
     {
-        return $this->coef;
+        return $this->Coef;
     }
 
-    public function setCoef(int $coef): self
+    public function setCoef(int $Coef): self
     {
-        $this->coef = $coef;
+        $this->Coef = $Coef;
 
         return $this;
     }
 
-    public function getModule(): ?Module
+    /**
+     * @return Collection|Module[]
+     */
+    public function getModules(): Collection
     {
-        return $this->module;
+        return $this->modules;
     }
 
-    public function setModule(?Module $module): self
+    public function addModule(Module $module): self
     {
-        $this->module = $module;
+        if (!$this->modules->contains($module)) {
+            $this->modules[] = $module;
+            $module->setUE($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModule(Module $module): self
+    {
+        if ($this->modules->removeElement($module)) {
+            // set the owning side to null (unless already changed)
+            if ($module->getUE() === $this) {
+                $module->setUE(null);
+            }
+        }
 
         return $this;
     }
@@ -112,6 +136,18 @@ class UE
                 $userUE->setUE(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSemestre(): ?Semestre
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(?Semestre $semestre): self
+    {
+        $this->semestre = $semestre;
 
         return $this;
     }

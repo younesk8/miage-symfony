@@ -22,32 +22,32 @@ class InscriptionSemestre
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $annee;
+    private $anneeScolaire;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $tier_Temp;
+    private $asTierTemp;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $RSE;
+    private $asRSE;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $Valide;
+    private $asValide;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $transmise;
+    private $asTransmise;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $message_Prof;
+    private $messageProf;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -55,16 +55,10 @@ class InscriptionSemestre
     private $regime;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Semestre::class, inversedBy="inscriptionSemestres")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $semestre;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="inscriptionSemestres")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $etudient;
+    private $etudiant;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="inscriptionSemestres")
@@ -91,74 +85,74 @@ class InscriptionSemestre
         return $this->id;
     }
 
-    public function getAnnee(): ?string
+    public function getAnneeScolaire(): ?string
     {
-        return $this->annee;
+        return $this->anneeScolaire;
     }
 
-    public function setAnnee(string $annee): self
+    public function setAnneeScolaire(string $anneeScolaire): self
     {
-        $this->annee = $annee;
+        $this->anneeScolaire = $anneeScolaire;
 
         return $this;
     }
 
-    public function getTierTemp(): ?bool
+    public function getAsTierTemp(): ?bool
     {
-        return $this->tier_Temp;
+        return $this->asTierTemp;
     }
 
-    public function setTierTemp(bool $tier_Temp): self
+    public function setAsTierTemp(bool $asTierTemp): self
     {
-        $this->tier_Temp = $tier_Temp;
+        $this->asTierTemp = $asTierTemp;
 
         return $this;
     }
 
-    public function getRSE(): ?bool
+    public function getAsRSE(): ?bool
     {
-        return $this->RSE;
+        return $this->asRSE;
     }
 
-    public function setRSE(bool $RSE): self
+    public function setAsRSE(bool $asRSE): self
     {
-        $this->RSE = $RSE;
+        $this->asRSE = $asRSE;
 
         return $this;
     }
 
-    public function getValide(): ?bool
+    public function getAsValide(): ?bool
     {
-        return $this->Valide;
+        return $this->asValide;
     }
 
-    public function setValide(?bool $Valide): self
+    public function setAsValide(?bool $asValide): self
     {
-        $this->Valide = $Valide;
+        $this->asValide = $asValide;
 
         return $this;
     }
 
-    public function getTransmise(): ?bool
+    public function getAsTransmise(): ?bool
     {
-        return $this->transmise;
+        return $this->asTransmise;
     }
 
-    public function setTransmise(bool $transmise): self
+    public function setAsTransmise(bool $asTransmise): self
     {
-        $this->transmise = $transmise;
+        $this->asTransmise = $asTransmise;
 
         return $this;
     }
 
     public function getMessageProf(): ?string
     {
-        return $this->message_Prof;
+        return $this->messageProf;
     }
 
-    public function setMessageProf(?string $message_Prof): self
+    public function setMessageProf(?string $messageProf): self
     {
-        $this->message_Prof = $message_Prof;
+        $this->messageProf = $messageProf;
 
         return $this;
     }
@@ -175,26 +169,14 @@ class InscriptionSemestre
         return $this;
     }
 
-    public function getSemestre(): ?Semestre
+    public function getEtudiant(): ?User
     {
-        return $this->semestre;
+        return $this->etudiant;
     }
 
-    public function setSemestre(?Semestre $semestre): self
+    public function setEtudiant(?User $etudiant): self
     {
-        $this->semestre = $semestre;
-
-        return $this;
-    }
-
-    public function getEtudient(): ?User
-    {
-        return $this->etudient;
-    }
-
-    public function setEtudient(?User $etudient): self
-    {
-        $this->etudient = $etudient;
+        $this->etudiant = $etudiant;
 
         return $this;
     }

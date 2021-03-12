@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserUERepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,25 +20,42 @@ class UserUE
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity=UserSemestre::class, inversedBy="userUEs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userSemestre;
+
+    /**
      * @ORM\ManyToOne(targetEntity=UE::class, inversedBy="userUEs")
      * @ORM\JoinColumn(nullable=false)
      */
     private $UE;
 
     /**
-     * @ORM\ManyToOne(targetEntity=UserModule::class, inversedBy="userUEs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=UserModule::class, mappedBy="userUE")
      */
-    private $user_Module;
+    private $userModules;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $note;
+    public function __construct()
+    {
+        $this->userModules = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserSemestre(): ?UserSemestre
+    {
+        return $this->userSemestre;
+    }
+
+    public function setUserSemestre(?UserSemestre $userSemestre): self
+    {
+        $this->userSemestre = $userSemestre;
+
+        return $this;
     }
 
     public function getUE(): ?UE
@@ -51,26 +70,32 @@ class UserUE
         return $this;
     }
 
-    public function getUserModule(): ?UserModule
+    /**
+     * @return Collection|UserModule[]
+     */
+    public function getUserModules(): Collection
     {
-        return $this->user_Module;
+        return $this->userModules;
     }
 
-    public function setUserModule(?UserModule $user_Module): self
+    public function addUserModule(UserModule $userModule): self
     {
-        $this->user_Module = $user_Module;
+        if (!$this->userModules->contains($userModule)) {
+            $this->userModules[] = $userModule;
+            $userModule->setUserUE($this);
+        }
 
         return $this;
     }
 
-    public function getNote(): ?int
+    public function removeUserModule(UserModule $userModule): self
     {
-        return $this->note;
-    }
-
-    public function setNote(?int $note): self
-    {
-        $this->note = $note;
+        if ($this->userModules->removeElement($userModule)) {
+            // set the owning side to null (unless already changed)
+            if ($userModule->getUserUE() === $this) {
+                $userModule->setUserUE(null);
+            }
+        }
 
         return $this;
     }
