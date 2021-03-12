@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InscriptionSemestre{% endblock %}
+
+{% block body %}
+    <h1>InscriptionSemestre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ inscription_semestre.id }}</td>
+            </tr>
+            <tr>
+                <th>AnneeScolaire</th>
+                <td>{{ inscription_semestre.anneeScolaire }}</td>
+            </tr>
+            <tr>
+                <th>AsTierTemp</th>
+                <td>{{ inscription_semestre.asTierTemp ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>AsRSE</th>
+                <td>{{ inscription_semestre.asRSE ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>AsValide</th>
+                <td>{{ inscription_semestre.asValide ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>AsTransmise</th>
+                <td>{{ inscription_semestre.asTransmise ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>MessageProf</th>
+                <td>{{ inscription_semestre.messageProf }}</td>
+            </tr>
+            <tr>
+                <th>Regime</th>
+                <td>{{ inscription_semestre.regime }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('inscription_semestre_index') }}">back to list</a>
+
+    <a href="{{ path('inscription_semestre_edit', {'id': inscription_semestre.id}) }}">edit</a>
+
+    {{ include('inscription_semestre/_delete_form.html.twig') }}
+{% endblock %}
