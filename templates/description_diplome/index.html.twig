@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DescriptionDiplome index{% endblock %}
+
+{% block body %}
+    <h1>DescriptionDiplome index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DescriptionBref</th>
+                <th>PublicConcerne</th>
+                <th>FichePDF</th>
+                <th>PreRequis</th>
+                <th>ModaliteInscription</th>
+                <th>Tarif</th>
+                <th>Competences</th>
+                <th>PoursuiteEtude</th>
+                <th>DeboucherPro</th>
+                <th>Contact</th>
+                <th>Atouts</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for description_diplome in description_diplomes %}
+            <tr>
+                <td>{{ description_diplome.id }}</td>
+                <td>{{ description_diplome.descriptionBref }}</td>
+                <td>{{ description_diplome.publicConcerne }}</td>
+                <td>{{ description_diplome.fichePDF }}</td>
+                <td>{{ description_diplome.preRequis }}</td>
+                <td>{{ description_diplome.modaliteInscription }}</td>
+                <td>{{ description_diplome.tarif }}</td>
+                <td>{{ description_diplome.competences }}</td>
+                <td>{{ description_diplome.poursuiteEtude }}</td>
+                <td>{{ description_diplome.deboucherPro }}</td>
+                <td>{{ description_diplome.contact }}</td>
+                <td>{{ description_diplome.atouts }}</td>
+                <td>
+                    <a href="{{ path('description_diplome_show', {'id': description_diplome.id}) }}">show</a>
+                    <a href="{{ path('description_diplome_edit', {'id': description_diplome.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('description_diplome_new') }}">Create new</a>
+{% endblock %}
