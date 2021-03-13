@@ -60,6 +60,11 @@ class Module
      */
     private $responsables;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $coef;
+
     public function __construct()
     {
         $this->userModules = new ArrayCollection();
@@ -228,6 +233,18 @@ class Module
         if ($this->responsables->removeElement($responsable)) {
             $responsable->removeModule($this);
         }
+
+        return $this;
+    }
+
+    public function getCoef(): ?int
+    {
+        return $this->coef;
+    }
+
+    public function setCoef(int $coef): self
+    {
+        $this->coef = $coef;
 
         return $this;
     }
