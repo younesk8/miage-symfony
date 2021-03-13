@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New UserModule{% endblock %}
+
+{% block body %}
+    <h1>Create new UserModule</h1>
+
+    {{ include('user_module/_form.html.twig') }}
+
+    <a href="{{ path('user_module_index') }}">back to list</a>
+{% endblock %}

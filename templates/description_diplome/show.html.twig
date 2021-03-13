@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DescriptionDiplome{% endblock %}
+
+{% block body %}
+    <h1>DescriptionDiplome</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ description_diplome.id }}</td>
+            </tr>
+            <tr>
+                <th>DescriptionBref</th>
+                <td>{{ description_diplome.descriptionBref }}</td>
+            </tr>
+            <tr>
+                <th>PublicConcerne</th>
+                <td>{{ description_diplome.publicConcerne }}</td>
+            </tr>
+            <tr>
+                <th>FichePDF</th>
+                <td>{{ description_diplome.fichePDF }}</td>
+            </tr>
+            <tr>
+                <th>PreRequis</th>
+                <td>{{ description_diplome.preRequis }}</td>
+            </tr>
+            <tr>
+                <th>ModaliteInscription</th>
+                <td>{{ description_diplome.modaliteInscription }}</td>
+            </tr>
+            <tr>
+                <th>Tarif</th>
+                <td>{{ description_diplome.tarif }}</td>
+            </tr>
+            <tr>
+                <th>Competences</th>
+                <td>{{ description_diplome.competences }}</td>
+            </tr>
+            <tr>
+                <th>PoursuiteEtude</th>
+                <td>{{ description_diplome.poursuiteEtude }}</td>
+            </tr>
+            <tr>
+                <th>DeboucherPro</th>
+                <td>{{ description_diplome.deboucherPro }}</td>
+            </tr>
+            <tr>
+                <th>Contact</th>
+                <td>{{ description_diplome.contact }}</td>
+            </tr>
+            <tr>
+                <th>Atouts</th>
+                <td>{{ description_diplome.atouts }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('description_diplome_index') }}">back to list</a>
+
+    <a href="{{ path('description_diplome_edit', {'id': description_diplome.id}) }}">edit</a>
+
+    {{ include('description_diplome/_delete_form.html.twig') }}
+{% endblock %}

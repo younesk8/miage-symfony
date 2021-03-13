@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserSemestre{% endblock %}
+
+{% block body %}
+    <h1>UserSemestre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_semestre.id }}</td>
+            </tr>
+            <tr>
+                <th>AsAjac</th>
+                <td>{{ user_semestre.asAjac ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>AsValide</th>
+                <td>{{ user_semestre.asValide ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_semestre_index') }}">back to list</a>
+
+    <a href="{{ path('user_semestre_edit', {'id': user_semestre.id}) }}">edit</a>
+
+    {{ include('user_semestre/_delete_form.html.twig') }}
+{% endblock %}

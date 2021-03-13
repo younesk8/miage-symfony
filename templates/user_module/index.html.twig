@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserModule index{% endblock %}
+
+{% block body %}
+    <h1>UserModule index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>AsAjac</th>
+                <th>Moyenne</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_module in user_modules %}
+            <tr>
+                <td>{{ user_module.id }}</td>
+                <td>{{ user_module.asAjac ? 'Yes' : 'No' }}</td>
+                <td>{{ user_module.moyenne }}</td>
+                <td>
+                    <a href="{{ path('user_module_show', {'id': user_module.id}) }}">show</a>
+                    <a href="{{ path('user_module_edit', {'id': user_module.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_module_new') }}">Create new</a>
+{% endblock %}

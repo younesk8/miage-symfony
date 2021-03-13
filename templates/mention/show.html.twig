@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mention{% endblock %}
+
+{% block body %}
+    <h1>Mention</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ mention.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ mention.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('mention_index') }}">back to list</a>
+
+    <a href="{{ path('mention_edit', {'id': mention.id}) }}">edit</a>
+
+    {{ include('mention/_delete_form.html.twig') }}
+{% endblock %}
