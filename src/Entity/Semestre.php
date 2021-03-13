@@ -31,12 +31,6 @@ class Semestre
     private $annee;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Mention::class, inversedBy="semestres")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $mention;
-
-    /**
      * @ORM\OneToMany(targetEntity=UserSemestre::class, mappedBy="semestre")
      */
     private $userSemestres;
@@ -45,6 +39,12 @@ class Semestre
      * @ORM\OneToMany(targetEntity=UE::class, mappedBy="semestre")
      */
     private $uEs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Parcours::class, inversedBy="semestres")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $parcours;
 
     public function __construct()
     {
@@ -77,18 +77,6 @@ class Semestre
     public function setAnnee(?Annee $annee): self
     {
         $this->annee = $annee;
-
-        return $this;
-    }
-
-    public function getMention(): ?Mention
-    {
-        return $this->mention;
-    }
-
-    public function setMention(?Mention $mention): self
-    {
-        $this->mention = $mention;
 
         return $this;
     }
@@ -149,6 +137,18 @@ class Semestre
                 $uE->setSemestre(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getParcours(): ?Parcours
+    {
+        return $this->parcours;
+    }
+
+    public function setParcours(?Parcours $parcours): self
+    {
+        $this->parcours = $parcours;
 
         return $this;
     }

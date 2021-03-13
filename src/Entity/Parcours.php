@@ -46,7 +46,13 @@ class Parcours
     private $promotions;
 
     /**
-     * @ORM\OneToOne(targetEntity=DescriptionDiplome::class, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Semestre::class, mappedBy="parcours")
+     */
+    private $semestres;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Description::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $description;
 
@@ -55,6 +61,7 @@ class Parcours
         $this->responsables = new ArrayCollection();
         $this->modules = new ArrayCollection();
         $this->promotions = new ArrayCollection();
+        $this->semestres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,12 +180,42 @@ class Parcours
         return $this;
     }
 
-    public function getDescription(): ?DescriptionDiplome
+    /**
+     * @return Collection|Semestre[]
+     */
+    public function getSemestres(): Collection
+    {
+        return $this->semestres;
+    }
+
+    public function addSemestre(Semestre $semestre): self
+    {
+        if (!$this->semestres->contains($semestre)) {
+            $this->semestres[] = $semestre;
+            $semestre->setParcours($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSemestre(Semestre $semestre): self
+    {
+        if ($this->semestres->removeElement($semestre)) {
+            // set the owning side to null (unless already changed)
+            if ($semestre->getParcours() === $this) {
+                $semestre->setParcours(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?Description
     {
         return $this->description;
     }
 
-    public function setDescription(?DescriptionDiplome $description): self
+    public function setDescription(Description $description): self
     {
         $this->description = $description;
 

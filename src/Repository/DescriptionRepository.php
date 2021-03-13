@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\DescriptionDiplome;
+use App\Entity\Description;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method DescriptionDiplome|null find($id, $lockMode = null, $lockVersion = null)
- * @method DescriptionDiplome|null findOneBy(array $criteria, array $orderBy = null)
- * @method DescriptionDiplome[]    findAll()
- * @method DescriptionDiplome[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Description|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Description|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Description[]    findAll()
+ * @method Description[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DescriptionDiplomeRepository extends ServiceEntityRepository
+class DescriptionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, DescriptionDiplome::class);
+        parent::__construct($registry, Description::class);
     }
 
     // /**
-    //  * @return DescriptionDiplome[] Returns an array of DescriptionDiplome objects
+    //  * @return Description[] Returns an array of Description objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class DescriptionDiplomeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?DescriptionDiplome
+    public function findOneBySomeField($value): ?Description
     {
         return $this->createQueryBuilder('d')
             ->andWhere('d.exampleField = :val')
