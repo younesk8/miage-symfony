@@ -105,11 +105,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/type-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fzaninotto/faker" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/fig/link-util" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/negotiation" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/api-platform/core" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/nelmio/cors-bundle" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/proxy-manager-bridge" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
