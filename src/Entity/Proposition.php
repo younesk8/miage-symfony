@@ -4,11 +4,9 @@ namespace App\Entity;
 
 use App\Repository\PropositionRepository;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=PropositionRepository::class)
- * @ApiResource()
  */
 class Proposition
 {
