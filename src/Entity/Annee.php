@@ -10,7 +10,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=AnneeRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"annee:read"}},
+ *     denormalizationContext={"groups"={"annee:write"}},
+ * )
  */
 class Annee
 {
