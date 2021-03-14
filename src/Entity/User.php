@@ -7,9 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"groups"={"user:write"}},
+ * )
  */
 class User implements UserInterface
 {
@@ -17,82 +24,110 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *  @Groups({"user:read","user:write"})
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     *  @Groups({"user:read"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     *  @Groups({"user:read","user:write"})
+     * @Assert\NotBlank ()
+     * @Assert\Length(min=4)
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"user:read","user:write"})
+     *  @Assert\NotBlank ()
+     * @Assert\Length(min=4)
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"user:read","user:write"})
+     *  @Assert\NotBlank ()
+     * @Assert\Length(min=4)
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *  @Groups({"user:read","user:write"})
+     *  @Assert\NotBlank ()
      */
     private $dateNaissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *  @Groups({"user:read","user:write"})
+     *  @Assert\NotBlank ()
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *  @Groups({"user:read","user:write"})
+     *  @Assert\NotBlank ()
      */
     private $tel_Fixe;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *  @Groups({"user:read","user:write"})
+     *  @Assert\NotBlank ()
+     *
      */
     private $tel_Portable;
 
     /**
      * @ORM\OneToMany(targetEntity=InscriptionSemestre::class, mappedBy="etudiant")
+     *
      */
     private $inscriptionSemestres;
 
     /**
      * @ORM\ManyToMany(targetEntity=Promotion::class, mappedBy="etudiants")
+     *
      */
     private $promotions;
 
     /**
      * @ORM\Column(type="boolean")
+     *  @Groups({"user:read","user:write"})
      */
     private $actif;
 
     /**
      * @ORM\OneToMany(targetEntity=UserSemestre::class, mappedBy="etudiant")
+     *
      */
     private $userSemestres;
 
     /**
      * @ORM\OneToOne(targetEntity=InfoEtudiant::class, mappedBy="user", cascade={"persist", "remove"})
+     *
      */
     private $infoEtudiant;
 
     /**
      * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="user")
+     *
      */
     private $responsables;
 
