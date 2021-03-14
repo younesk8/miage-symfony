@@ -22,22 +22,21 @@ class CursusFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-
         $faker = Factory::create('fr_FR');
-        for ($nbEcole=1; $nbEcole <5; $nbEcole++){
+        for ($nbEcole=0; $nbEcole <3; $nbEcole++){
 
             $ecole = new Ecole();
             $ecole->setNom($faker->realText(50));
             $manager->persist($ecole);
 
-            for ($nbDepartement = 1; $nbDepartement < random_int(5,10); $nbDepartement++){
+            for ($nbDepartement = 0; $nbDepartement < random_int(2,4); $nbDepartement++){
 
                 $departement = new Departement();
                 $departement->setNom($faker->realText(50))
                     ->setEcole($ecole);
                 $manager->persist($departement);
 
-                for ($nbPole = 1; $nbPole < random_int(2,4); $nbPole++){
+                for ($nbPole = 0; $nbPole < random_int(2,3); $nbPole++){
 
                     $pole = new Pole();
                     $pole->setNom($faker->realText(50))
@@ -64,26 +63,27 @@ class CursusFixtures extends Fixture
 
                     foreach ($listDiplome as $diplome){
 
-                        for ($nbAnnee = 1; $nbAnnee < $diplome->getNbAnnee(); $nbAnnee++) {
+                        for ($nbAnnee = 1; $nbAnnee < $diplome->getNbAnnee()+1; $nbAnnee++) {
                             $annee = new Annee();
                             if ($diplome->getNom() == "licence") {
                                 $annee->setNom("L" . $nbAnnee);
+                                $licence->addAnnee($annee);
                             }elseif ($diplome->getNom() == "master"){
                                 $annee->setNom("M".$nbAnnee);
+                                $master->addAnnee($annee);
                             }
-                            $annee->setDiplome($diplome)
-                                ->setNumeroAnnee($nbAnnee);
+                            $annee->setNumeroAnnee($nbAnnee);
                             $manager->persist($annee);
                         }
 
-                            for ($nbMention = 1; $nbMention < random_int(10,20); $nbMention++) {
+                            for ($nbMention = 0; $nbMention < random_int(5,10); $nbMention++) {
 
                             $mention = new Mention();
                             $mention->setNom($faker->realText(50))
                                 ->setDiplome($diplome);
                             $manager->persist($mention);
 
-                            for ($nbParcours = 1; $nbParcours < random_int(1,4); $nbParcours++) {
+                            for ($nbParcours = 0; $nbParcours < random_int(1,3); $nbParcours++) {
 
                                 $parcours = new Parcours();
                                 $description = new Description();
@@ -100,7 +100,7 @@ class CursusFixtures extends Fixture
                                     ->setTarif($faker->text());
                                 $manager->persist($description);
 
-                                if ($nbParcours == 1){
+                                if ($nbParcours == 0){
                                     $parcours->setNom("default");
                                 }else{
                                     $parcours->setNom($faker->realText(50));
@@ -111,7 +111,7 @@ class CursusFixtures extends Fixture
 
                                 foreach ($diplome->getAnnees() as $annee){
 
-                                    for ($nbSemestre = 1; $nbSemestre < 2; $nbSemestre++){
+                                    for ($nbSemestre = 0; $nbSemestre < 2; $nbSemestre++){
 
                                         $semestre = new Semestre();
                                         $semestre->setNom($faker->realText(50))
@@ -119,14 +119,14 @@ class CursusFixtures extends Fixture
                                             ->setParcours($parcours);
                                         $manager->persist($semestre);
 
-                                        for ($nbUE = 1; $nbUE < random_int(6,15); $nbUE++){
+                                        for ($nbUE = 0; $nbUE < random_int(5,10); $nbUE++){
 
                                             $ue = new UE();
                                             $ue->setNom($faker->realText(50))
                                                 ->setSemestre($semestre);
                                             $manager->persist($ue);
 
-                                            for ($nbModule = 1; $nbModule < random_int(1,5); $nbModule++){
+                                            for ($nbModule = 0; $nbModule < random_int(1,3); $nbModule++){
 
                                                 $module = new Module();
                                                 $module->setNom($faker->realText(50))
