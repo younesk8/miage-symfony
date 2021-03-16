@@ -9,10 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AnneeRepository::class)
- * @ApiResource(
- *     normalizationContext={"groups"={"annee:read"}},
- *     denormalizationContext={"groups"={"annee:write"}},
- * )
  */
 class Annee
 {
