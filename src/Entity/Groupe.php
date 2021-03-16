@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\GroupeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
+ * @ApiResource()
  */
 class Groupe
 {
