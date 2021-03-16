@@ -41,12 +41,13 @@ class Parcours
     private $modules;
 
     /**
-     * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="parcours")
+     * @ORM\OneToMany(targetEntity=Semestre::class, mappedBy="parcours")
      */
-    private $promotions;
+    private $semestres;
 
     /**
-     * @ORM\OneToOne(targetEntity=DescriptionDiplome::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Description::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $description;
 
@@ -54,7 +55,7 @@ class Parcours
     {
         $this->responsables = new ArrayCollection();
         $this->modules = new ArrayCollection();
-        $this->promotions = new ArrayCollection();
+        $this->semestres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,41 +145,41 @@ class Parcours
     }
 
     /**
-     * @return Collection|Promotion[]
+     * @return Collection|Semestre[]
      */
-    public function getPromotions(): Collection
+    public function getSemestres(): Collection
     {
-        return $this->promotions;
+        return $this->semestres;
     }
 
-    public function addPromotion(Promotion $promotion): self
+    public function addSemestre(Semestre $semestre): self
     {
-        if (!$this->promotions->contains($promotion)) {
-            $this->promotions[] = $promotion;
-            $promotion->setParcours($this);
+        if (!$this->semestres->contains($semestre)) {
+            $this->semestres[] = $semestre;
+            $semestre->setParcours($this);
         }
 
         return $this;
     }
 
-    public function removePromotion(Promotion $promotion): self
+    public function removeSemestre(Semestre $semestre): self
     {
-        if ($this->promotions->removeElement($promotion)) {
+        if ($this->semestres->removeElement($semestre)) {
             // set the owning side to null (unless already changed)
-            if ($promotion->getParcours() === $this) {
-                $promotion->setParcours(null);
+            if ($semestre->getParcours() === $this) {
+                $semestre->setParcours(null);
             }
         }
 
         return $this;
     }
 
-    public function getDescription(): ?DescriptionDiplome
+    public function getDescription(): ?Description
     {
         return $this->description;
     }
 
-    public function setDescription(?DescriptionDiplome $description): self
+    public function setDescription(Description $description): self
     {
         $this->description = $description;
 

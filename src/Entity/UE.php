@@ -25,11 +25,6 @@ class UE
     private $nom;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $Coef;
-
-    /**
      * @ORM\OneToMany(targetEntity=Module::class, mappedBy="UE")
      */
     private $modules;
@@ -64,18 +59,6 @@ class UE
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getCoef(): ?int
-    {
-        return $this->Coef;
-    }
-
-    public function setCoef(int $Coef): self
-    {
-        $this->Coef = $Coef;
 
         return $this;
     }
