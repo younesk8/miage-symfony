@@ -46,10 +46,16 @@ class Semestre
      */
     private $parcours;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="semestre")
+     */
+    private $promotions;
+
     public function __construct()
     {
         $this->userSemestres = new ArrayCollection();
         $this->uEs = new ArrayCollection();
+        $this->promotions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +155,36 @@ class Semestre
     public function setParcours(?Parcours $parcours): self
     {
         $this->parcours = $parcours;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Promotion[]
+     */
+    public function getPromotions(): Collection
+    {
+        return $this->promotions;
+    }
+
+    public function addPromotion(Promotion $promotion): self
+    {
+        if (!$this->promotions->contains($promotion)) {
+            $this->promotions[] = $promotion;
+            $promotion->setSemestre($this);
+        }
+
+        return $this;
+    }
+
+    public function removePromotion(Promotion $promotion): self
+    {
+        if ($this->promotions->removeElement($promotion)) {
+            // set the owning side to null (unless already changed)
+            if ($promotion->getSemestre() === $this) {
+                $promotion->setSemestre(null);
+            }
+        }
 
         return $this;
     }

@@ -36,11 +36,6 @@ class Mention
     private $parcours;
 
     /**
-     * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="mention")
-     */
-    private $promotions;
-
-    /**
      * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="mention")
      */
     private $responsables;
@@ -53,7 +48,6 @@ class Mention
     public function __construct()
     {
         $this->parcours = new ArrayCollection();
-        $this->promotions = new ArrayCollection();
         $this->responsables = new ArrayCollection();
     }
 
@@ -110,36 +104,6 @@ class Mention
             // set the owning side to null (unless already changed)
             if ($parcour->getMention() === $this) {
                 $parcour->setMention(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Promotion[]
-     */
-    public function getPromotions(): Collection
-    {
-        return $this->promotions;
-    }
-
-    public function addPromotion(Promotion $promotion): self
-    {
-        if (!$this->promotions->contains($promotion)) {
-            $this->promotions[] = $promotion;
-            $promotion->setMention($this);
-        }
-
-        return $this;
-    }
-
-    public function removePromotion(Promotion $promotion): self
-    {
-        if ($this->promotions->removeElement($promotion)) {
-            // set the owning side to null (unless already changed)
-            if ($promotion->getMention() === $this) {
-                $promotion->setMention(null);
             }
         }
 

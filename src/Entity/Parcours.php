@@ -41,11 +41,6 @@ class Parcours
     private $modules;
 
     /**
-     * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="parcours")
-     */
-    private $promotions;
-
-    /**
      * @ORM\OneToMany(targetEntity=Semestre::class, mappedBy="parcours")
      */
     private $semestres;
@@ -60,7 +55,6 @@ class Parcours
     {
         $this->responsables = new ArrayCollection();
         $this->modules = new ArrayCollection();
-        $this->promotions = new ArrayCollection();
         $this->semestres = new ArrayCollection();
     }
 
@@ -145,36 +139,6 @@ class Parcours
     {
         if ($this->modules->removeElement($module)) {
             $module->removeParcour($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Promotion[]
-     */
-    public function getPromotions(): Collection
-    {
-        return $this->promotions;
-    }
-
-    public function addPromotion(Promotion $promotion): self
-    {
-        if (!$this->promotions->contains($promotion)) {
-            $this->promotions[] = $promotion;
-            $promotion->setParcours($this);
-        }
-
-        return $this;
-    }
-
-    public function removePromotion(Promotion $promotion): self
-    {
-        if ($this->promotions->removeElement($promotion)) {
-            // set the owning side to null (unless already changed)
-            if ($promotion->getParcours() === $this) {
-                $promotion->setParcours(null);
-            }
         }
 
         return $this;
