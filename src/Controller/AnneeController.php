@@ -21,7 +21,7 @@ class AnneeController extends AbstractController
     public function index(AnneeRepository $anneeRepository): Response
     {
         return $this->render('annee/index.html.twig',[
-            'annee' => $anneeRepository->findAll()
+            'annees' => $anneeRepository->findAll()
         ]);
     }
 
