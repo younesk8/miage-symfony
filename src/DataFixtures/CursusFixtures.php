@@ -23,13 +23,13 @@ class CursusFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
-        for ($nbEcole=0; $nbEcole <3; $nbEcole++){
+        for ($nbEcole=0; $nbEcole <1; $nbEcole++){
 
             $ecole = new Ecole();
             $ecole->setNom($faker->realText(50));
             $manager->persist($ecole);
 
-            for ($nbDepartement = 0; $nbDepartement < random_int(2,4); $nbDepartement++){
+            for ($nbDepartement = 0; $nbDepartement < random_int(2,3); $nbDepartement++){
 
                 $departement = new Departement();
                 $departement->setNom($faker->realText(50))
@@ -76,7 +76,7 @@ class CursusFixtures extends Fixture
                             $manager->persist($annee);
                         }
 
-                            for ($nbMention = 0; $nbMention < random_int(5,10); $nbMention++) {
+                            for ($nbMention = 0; $nbMention < random_int(3,5); $nbMention++) {
 
                             $mention = new Mention();
                             $mention->setNom($faker->realText(50))
