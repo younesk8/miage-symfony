@@ -118,7 +118,6 @@ class User implements UserInterface
         $this->inscriptionSemestres = new ArrayCollection();
         $this->promotions = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
-        $this->userModules = new ArrayCollection();
         $this->responsables = new ArrayCollection();
     }
 
