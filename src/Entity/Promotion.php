@@ -6,11 +6,9 @@ use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=PromotionRepository::class)
- * @ApiResource()
  */
 class Promotion
 {
@@ -42,25 +40,15 @@ class Promotion
     private $userSemestres;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Mention::class, inversedBy="promotions")
-     */
-    private $mention;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Annee::class, inversedBy="promotions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $annee;
-
-    /**
      * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="promotion")
      */
     private $responsables;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Parcours::class, inversedBy="promotions")
+     * @ORM\ManyToOne(targetEntity=Semestre::class, inversedBy="promotions")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $parcours;
+    private $semestre;
 
     public function __construct()
     {
@@ -172,30 +160,6 @@ class Promotion
         return $this;
     }
 
-    public function getMention(): ?Mention
-    {
-        return $this->mention;
-    }
-
-    public function setMention(?Mention $mention): self
-    {
-        $this->mention = $mention;
-
-        return $this;
-    }
-
-    public function getAnnee(): ?Annee
-    {
-        return $this->annee;
-    }
-
-    public function setAnnee(?Annee $annee): self
-    {
-        $this->annee = $annee;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Responsable[]
      */
@@ -226,14 +190,14 @@ class Promotion
         return $this;
     }
 
-    public function getParcours(): ?Parcours
+    public function getSemestre(): ?Semestre
     {
-        return $this->parcours;
+        return $this->semestre;
     }
 
-    public function setParcours(?Parcours $parcours): self
+    public function setSemestre(?Semestre $semestre): self
     {
-        $this->parcours = $parcours;
+        $this->semestre = $semestre;
 
         return $this;
     }

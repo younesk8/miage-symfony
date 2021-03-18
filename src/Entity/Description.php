@@ -2,16 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\DescriptionDiplomeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\DescriptionRepository;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * @ORM\Entity(repositoryClass=DescriptionDiplomeRepository::class)
- * @ApiResource()
+ * @ORM\Entity(repositoryClass=DescriptionRepository::class)
  */
-class DescriptionDiplome
+class Description
 {
     /**
      * @ORM\Id
@@ -56,11 +53,6 @@ class DescriptionDiplome
     private $competences;
 
     /**
-     * @ORM\OneToOne(targetEntity=Mention::class, cascade={"persist", "remove"})
-     */
-    private $mention;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $poursuiteEtude;
@@ -79,11 +71,6 @@ class DescriptionDiplome
      * @ORM\Column(type="text")
      */
     private $atouts;
-
-    public function __construct()
-    {
-        $this->parcours = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -170,18 +157,6 @@ class DescriptionDiplome
     public function setCompetences(string $competences): self
     {
         $this->competences = $competences;
-
-        return $this;
-    }
-
-    public function getMention(): ?Mention
-    {
-        return $this->mention;
-    }
-
-    public function setMention(?Mention $mention): self
-    {
-        $this->mention = $mention;
 
         return $this;
     }

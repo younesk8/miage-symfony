@@ -6,11 +6,9 @@ use App\Repository\MentionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=MentionRepository::class)
- * @ApiResource()
  */
 class Mention
 {
@@ -33,30 +31,23 @@ class Mention
     private $diplome;
 
     /**
-     * @ORM\OneToMany(targetEntity=Semestre::class, mappedBy="mention")
-     */
-    private $semestres;
-
-    /**
      * @ORM\OneToMany(targetEntity=Parcours::class, mappedBy="mention")
      */
     private $parcours;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="mention")
-     */
-    private $promotions;
 
     /**
      * @ORM\OneToMany(targetEntity=Responsable::class, mappedBy="mention")
      */
     private $responsables;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Parcours::class, cascade={"persist", "remove"})
+     */
+    private $description;
+
     public function __construct()
     {
-        $this->semestres = new ArrayCollection();
         $this->parcours = new ArrayCollection();
-        $this->promotions = new ArrayCollection();
         $this->responsables = new ArrayCollection();
     }
 
@@ -85,36 +76,6 @@ class Mention
     public function setDiplome(?Diplome $diplome): self
     {
         $this->diplome = $diplome;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Semestre[]
-     */
-    public function getSemestres(): Collection
-    {
-        return $this->semestres;
-    }
-
-    public function addSemestre(Semestre $semestre): self
-    {
-        if (!$this->semestres->contains($semestre)) {
-            $this->semestres[] = $semestre;
-            $semestre->setMention($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSemestre(Semestre $semestre): self
-    {
-        if ($this->semestres->removeElement($semestre)) {
-            // set the owning side to null (unless already changed)
-            if ($semestre->getMention() === $this) {
-                $semestre->setMention(null);
-            }
-        }
 
         return $this;
     }
@@ -150,36 +111,6 @@ class Mention
     }
 
     /**
-     * @return Collection|Promotion[]
-     */
-    public function getPromotions(): Collection
-    {
-        return $this->promotions;
-    }
-
-    public function addPromotion(Promotion $promotion): self
-    {
-        if (!$this->promotions->contains($promotion)) {
-            $this->promotions[] = $promotion;
-            $promotion->setMention($this);
-        }
-
-        return $this;
-    }
-
-    public function removePromotion(Promotion $promotion): self
-    {
-        if ($this->promotions->removeElement($promotion)) {
-            // set the owning side to null (unless already changed)
-            if ($promotion->getMention() === $this) {
-                $promotion->setMention(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Responsable[]
      */
     public function getResponsables(): Collection
@@ -205,6 +136,18 @@ class Mention
                 $responsable->setMention(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?Parcours
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?Parcours $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

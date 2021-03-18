@@ -5,11 +5,9 @@ namespace App\Entity;
 use App\Repository\UserModuleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=UserModuleRepository::class)
- * @ApiResource()
  */
 class UserModule
 {

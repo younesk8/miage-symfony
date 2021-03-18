@@ -6,11 +6,9 @@ use App\Repository\SemestreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=SemestreRepository::class)
- * @ApiResource()
  */
 class Semestre
 {
@@ -33,12 +31,6 @@ class Semestre
     private $annee;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Mention::class, inversedBy="semestres")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $mention;
-
-    /**
      * @ORM\OneToMany(targetEntity=UserSemestre::class, mappedBy="semestre")
      */
     private $userSemestres;
@@ -48,10 +40,22 @@ class Semestre
      */
     private $uEs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Parcours::class, inversedBy="semestres")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $parcours;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="semestre")
+     */
+    private $promotions;
+
     public function __construct()
     {
         $this->userSemestres = new ArrayCollection();
         $this->uEs = new ArrayCollection();
+        $this->promotions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,18 +83,6 @@ class Semestre
     public function setAnnee(?Annee $annee): self
     {
         $this->annee = $annee;
-
-        return $this;
-    }
-
-    public function getMention(): ?Mention
-    {
-        return $this->mention;
-    }
-
-    public function setMention(?Mention $mention): self
-    {
-        $this->mention = $mention;
 
         return $this;
     }
@@ -149,6 +141,48 @@ class Semestre
             // set the owning side to null (unless already changed)
             if ($uE->getSemestre() === $this) {
                 $uE->setSemestre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getParcours(): ?Parcours
+    {
+        return $this->parcours;
+    }
+
+    public function setParcours(?Parcours $parcours): self
+    {
+        $this->parcours = $parcours;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Promotion[]
+     */
+    public function getPromotions(): Collection
+    {
+        return $this->promotions;
+    }
+
+    public function addPromotion(Promotion $promotion): self
+    {
+        if (!$this->promotions->contains($promotion)) {
+            $this->promotions[] = $promotion;
+            $promotion->setSemestre($this);
+        }
+
+        return $this;
+    }
+
+    public function removePromotion(Promotion $promotion): self
+    {
+        if ($this->promotions->removeElement($promotion)) {
+            // set the owning side to null (unless already changed)
+            if ($promotion->getSemestre() === $this) {
+                $promotion->setSemestre(null);
             }
         }
 

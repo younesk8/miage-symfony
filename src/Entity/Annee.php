@@ -6,14 +6,9 @@ use App\Repository\AnneeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=AnneeRepository::class)
- * @ApiResource(
- *     normalizationContext={"groups"={"annee:read"}},
- *     denormalizationContext={"groups"={"annee:write"}},
- * )
  */
 class Annee
 {
@@ -45,17 +40,11 @@ class Annee
      */
     private $semestres;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="annee")
-     */
-    private $promotions;
-
 
     public function __construct()
     {
         $this->semestres = new ArrayCollection();
         $this->userSemestres = new ArrayCollection();
-        $this->promotions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,36 +112,6 @@ class Annee
             // set the owning side to null (unless already changed)
             if ($semestre->getAnnee() === $this) {
                 $semestre->setAnnee(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Promotion[]
-     */
-    public function getPromotions(): Collection
-    {
-        return $this->promotions;
-    }
-
-    public function addPromotion(Promotion $promotion): self
-    {
-        if (!$this->promotions->contains($promotion)) {
-            $this->promotions[] = $promotion;
-            $promotion->setAnnee($this);
-        }
-
-        return $this;
-    }
-
-    public function removePromotion(Promotion $promotion): self
-    {
-        if ($this->promotions->removeElement($promotion)) {
-            // set the owning side to null (unless already changed)
-            if ($promotion->getAnnee() === $this) {
-                $promotion->setAnnee(null);
             }
         }
 

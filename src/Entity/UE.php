@@ -6,11 +6,9 @@ use App\Repository\UERepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=UERepository::class)
- * @ApiResource()
  */
 class UE
 {
@@ -25,11 +23,6 @@ class UE
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $Coef;
 
     /**
      * @ORM\OneToMany(targetEntity=Module::class, mappedBy="UE")
@@ -66,18 +59,6 @@ class UE
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getCoef(): ?int
-    {
-        return $this->Coef;
-    }
-
-    public function setCoef(int $Coef): self
-    {
-        $this->Coef = $Coef;
 
         return $this;
     }

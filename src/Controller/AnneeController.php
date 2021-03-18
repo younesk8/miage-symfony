@@ -8,6 +8,7 @@ use App\Repository\AnneeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/annee")
@@ -19,8 +20,8 @@ class AnneeController extends AbstractController
      */
     public function index(AnneeRepository $anneeRepository): Response
     {
-        return $this->render('annee/index.html.twig',[
-            'annees' => $anneeRepository->findAll()
+        return $this->render('annee/index.html.twig', [
+            'annees' => $anneeRepository->findAll(),
         ]);
     }
 

@@ -6,11 +6,9 @@ use App\Repository\ModuleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=ModuleRepository::class)
- * @ApiResource()
  */
 class Module
 {
@@ -61,6 +59,11 @@ class Module
      * @ORM\ManyToMany(targetEntity=Responsable::class, mappedBy="modules")
      */
     private $responsables;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $coef;
 
     public function __construct()
     {
@@ -230,6 +233,18 @@ class Module
         if ($this->responsables->removeElement($responsable)) {
             $responsable->removeModule($this);
         }
+
+        return $this;
+    }
+
+    public function getCoef(): ?int
+    {
+        return $this->coef;
+    }
+
+    public function setCoef(int $coef): self
+    {
+        $this->coef = $coef;
 
         return $this;
     }
