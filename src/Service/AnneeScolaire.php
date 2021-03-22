@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use DateTime;
 use phpDocumentor\Reflection\Types\Integer;
 
 class AnneeScolaire
@@ -45,6 +46,21 @@ class AnneeScolaire
         $jour = intval(date("j"));
         $mois = intval(date("n"));
         $annee = intval(date("Y"));
+        if ($mois > self::MOISBEDUTANNEE || ($mois == self::MOISBEDUTANNEE && $jour >= self::JOURDEBUTANNEE) ){
+            return $this->goToString(array($annee, $annee+1));
+        }else{
+            return $this->goToString(array($annee-1, $annee));
+        }
+    }
+
+    /**
+     * @param DateTime $dateTime
+     * @return String
+     */
+    public function dateToAnneScolaire(DateTime $dateTime) : String{
+        $jour = intval($dateTime->format("j"));
+        $mois = intval($dateTime->format("n"));
+        $annee = intval($dateTime->format("Y"));
         if ($mois > self::MOISBEDUTANNEE || ($mois == self::MOISBEDUTANNEE && $jour >= self::JOURDEBUTANNEE) ){
             return $this->goToString(array($annee, $annee+1));
         }else{
