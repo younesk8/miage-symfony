@@ -13,7 +13,6 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
             ->add('password')
             ->add('nom')
             ->add('prenom')
@@ -22,8 +21,8 @@ class UserType extends AbstractType
             ->add('tel_Fixe')
             ->add('tel_Portable')
             ->add('actif')
-            ->add('promotions')
-            ->add('infoEtudiant')
+
+
         ;
     }
 
